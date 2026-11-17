@@ -41,4 +41,24 @@ describe("RentalList", () => {
     list.add(rental);
     expect(list.totalIncome()).toBe(300);
   });
+
+  test("totalLateFees calcula recargos", () => {
+    expect(list.totalLateFees()).toBe(0);
+
+    rental.lateHours = 2;
+    list.add(rental);
+
+    expect(list.totalLateFees()).toBe(400);
+    expect(rental.cost()).toBe(300);
+    expect(list.totalIncome()).toBe(300);
+  });
+
+  test("remove elimina y valida", () => {
+    list.add(rental);
+    list.remove("B-123");
+
+    expect(list.getItems()).toEqual([]);
+    expect(() => list.remove("B-999")).toThrow();
+  });
+
 });

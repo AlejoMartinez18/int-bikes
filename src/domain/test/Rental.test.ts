@@ -74,4 +74,27 @@ describe("Rental", () => {
   test("show the rental as text", () => {
     expect(rental.toString()).toBe("B-123 (Urbana) - Juan Gómez - 3 h - $300");
   });
+
+  test("lateHours válidas", () => {
+    expect(rental.lateHours).toBe(0);
+
+    rental.lateHours = 2;
+    expect(rental.lateHours).toBe(2);
+
+    rental.lateHours = 0;
+    expect(rental.lateHours).toBe(0);
+  });
+
+  test("lateHours inválidas", () => {
+    expect(() => (rental.lateHours = -1)).toThrow();
+    expect(() => (rental.lateHours = 1.5)).toThrow();
+  });
+
+  test("toString muestra atraso solo si existe", () => {
+    expect(rental.toString()).not.toContain("Atraso");
+
+    rental.lateHours = 2;
+    expect(rental.toString()).toContain("Atraso: 2 h");
+  });
+
 });

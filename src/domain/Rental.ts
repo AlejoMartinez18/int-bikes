@@ -91,15 +91,24 @@ export class Rental {
     return this._lateHours;
   }
 
-  set lateHours(_value: number) {
-    // TODO: validar y guardar las horas de atraso
+  set lateHours(value: number) {
+    if (!Number.isInteger(value) || value < 0) {
+      throw new Error("Las horas de atraso deben ser un entero mayor o igual a 0.");
+    }
+    this._lateHours = value;
   }
 
   cost(): number {
     return this.hours * this.pricePerHour;
   }
 
-  toString(): string {
-    return `${this.bikeCode} (${BIKE_TYPE_LABELS[this.bikeType]}) - ${this.customer} - ${this.hours} h - $${this.cost()}`;
+ toString(): string {
+    let text = `${this.bikeCode} (${BIKE_TYPE_LABELS[this.bikeType]}) - ${this.customer} - ${this.hours} h - $${this.cost()}`;
+
+    if (this.lateHours > 0) {
+      text += ` - Atraso: ${this.lateHours} h`;
+    }
+
+    return text;
   }
 }
